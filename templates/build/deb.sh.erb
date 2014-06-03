@@ -1,0 +1,65 @@
+#!/bin/bash
+PROJECT_NAME="<%= name %>"
+
+pushd .
+cd build
+
+# prepara diretorio temporario para build
+rm debian/$PROJECT_NAME*.deb
+if [ -e ./debian/r7 ]; then
+  rm -rf debian/r7
+fi
+mkdir -p debian/r7/<%= name %>
+mkdir debian/r7/<%= name %>/log
+
+if [ -e ./debian/etc ]; then
+  rm -rf debian/etc
+fi
+
+popd
+
+# Loading RVM
+if [[ -s "/usr/local/rvm/scripts/rvm" ]] ; then
+  source "/usr/local/rvm/scripts/rvm"
+else
+  printf "ERROR: An RVM installation was not found.\n"
+  exit 1
+fi
+
+# vendoriza as gems do projeto
+rm -rf vendor/cache vendor/ruby .bundle
+bundle install --deployment --without development test
+
+# falha o script caso o bundle install tenha falhado
+FAIL=$?
+if [ $FAIL -gt "0" ]; then
+  echo "Tag not found, create one and try again. Exiting now!"
+  exit $FAIL
+fi
+
+# lista de arquivos e diretorios para incluir no pacote
+FILES_TO_COPY="config lib vendor Gemfile Gemfile.lock Rakefile"
+cp -R $FILES_TO_COPY ./build/debian/r7/<%= name %>
+cp -R ./etc ./build/debian/
+
+# apaga tags do jenkins antes de pegar a versao
+git tag -l | grep jenkins | xargs git tag -d
+
+# informacoes do pacote
+VERSION=`git describe --abbrev=0 --match="[0-9]*\.[0-9]*\.[0-9]*"`
+PACKAGE_NAME=$PROJECT_NAME
+ARCH="all"
+MAINTAINER="R7"
+
+# cria o pacote .deb
+pushd .
+cd ./build/debian
+echo "Found version $VERSION"
+bundle exec fpm -s dir -t deb -n $PACKAGE_NAME -a $ARCH -m $MAINTAINER -v $VERSION --prefix / --post-install ./postinst --pre-install ./preinst r7 etc
+
+# limpa a sujeira
+rm -rf r7
+rm -rf etc
+
+popd
+exit 0

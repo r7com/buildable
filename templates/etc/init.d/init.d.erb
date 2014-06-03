@@ -1,0 +1,25 @@
+#!/bin/bash
+
+message() {
+  echo "Create your own init script at <%= name %>/etc/init.d/<%= name %>"
+}
+
+case "$1" in
+  start)
+    message && exit 0
+    exit 1
+    ;;
+  stop)
+    message && exit 0
+    exit 1
+    ;;
+  restart)
+    message
+    exit 0
+    ;;
+  *)
+  echo "Usage: /etc/init.d/<%= name %> {start|stop|restart}"
+  exit 1
+esac
+
+exit 0
