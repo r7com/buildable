@@ -6,19 +6,20 @@ message() {
 
 case "$1" in
   start)
-    message && exit 0
+    message
     exit 1
     ;;
   stop)
-    message && exit 0
+    message
     exit 1
     ;;
   restart)
     message
-    exit 0
+    exit 1
     ;;
   *)
   echo "Usage: /etc/init.d/<%= name %> {start|stop|restart}"
+  message
   exit 1
 esac
 

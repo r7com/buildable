@@ -8,9 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Buildable::VERSION
   spec.authors       = ["Alexandre Prates"]
   spec.email         = ["ajfprates@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Gem para criar estrutura basica para um projeto ser buildado.}
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

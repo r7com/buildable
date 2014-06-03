@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require './lib/buildable'
+require 'buildable'
 
-Buildable.run('test')
+Buildable.run(ARGV[0])
