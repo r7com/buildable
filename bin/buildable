@@ -1,5 +1,11 @@
 #!/usr/bin/env ruby
 
+name = ARGV[0]
+unless name
+  puts "usage:\n\tbuildable <app_name>"
+  exit 1
+end
+
 require 'buildable'
 
 Buildable.run(ARGV[0])
