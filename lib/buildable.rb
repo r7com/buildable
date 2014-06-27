@@ -35,6 +35,8 @@ module Buildable
       end
 
       FileUtils.chmod '+x', File.expand_path('./etc/init.d/init.d')
+      FileUtils.chmod '+x', File.expand_path('./build/deb.sh')
+      FileUtils.chmod '+x', File.expand_path('./build/deploy_deb.sh')
       FileUtils.mv File.expand_path('./etc/init.d/init.d'), File.expand_path("./etc/init.d/#{name}")
     end
 
