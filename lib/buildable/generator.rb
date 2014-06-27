@@ -1,9 +1,10 @@
 module Buildable
   class Generator
-    attr_reader :name
+    attr_reader :name, :package_name
 
     def initialize(name)
       @name = name
+      @package_name = name.gsub('_', '-')
     end
 
     def create(template, destination)

@@ -52,7 +52,8 @@ stop_project() {
 }
 
 really_stop_project() {
-  $STARTING_PROJECT
+  kill $(cat $PIDFILE)
+
   errcode=$?
   log_end $errcode "Stopped."
   return $?
