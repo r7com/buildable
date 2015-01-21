@@ -38,7 +38,7 @@ if [ $FAIL -gt "0" ]; then
 fi
 
 # lista de arquivos e diretorios para incluir no pacote
-FILES_TO_COPY="config lib vendor Gemfile Gemfile.lock Rakefile"
+FILES_TO_COPY="<%= Dir['*'].join(' ') %>"
 cp -R $FILES_TO_COPY ./build/debian/r7/<%= name %>
 cp -R ./etc ./build/debian/
 
