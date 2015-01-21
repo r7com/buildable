@@ -1,10 +1,10 @@
-#Buildable
+=Buildable
 
 Precisa buildar o seu projeto e não sabe como?
 
 Basta seguir o seguintes passos:
 
-##Como usar
+==Como usar
 
 1. Inclua a gem no Gemfile do seu projeto:
 
@@ -25,6 +25,6 @@ do seu projeto
 
 Pronto basta criar o job no Jenkis e ser feliz (ou não!).
 
-#Duvidas questões e aprimoramentos:
+=Duvidas questões e aprimoramentos:
 
 mail-me: ajfprates@gmail.com
