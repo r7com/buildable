@@ -6,12 +6,6 @@ require 'erb'
 
 module Buildable
   class << self
-
-#
-#
-#  REMEMBER to adding fpm to Gemfile
-#
-#
     def run(name)
       create_directories
       create_files(name)
@@ -63,6 +57,5 @@ module Buildable
       gemfile.chop! << "\n\n# Gem for build debian (deb) packages\ngem 'fpm', group: 'development'\n\n" unless gemfile.match /gem ['"]fpm['"]/
       File.open(gemfile_path, 'w') { |f| f.write gemfile }
     end
-
   end
 end

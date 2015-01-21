@@ -12,6 +12,5 @@ module Buildable
       content = ERB.new(@template).result binding
       File.open(destination, 'w') { |f| f.write content }
     end
-
   end
 end
