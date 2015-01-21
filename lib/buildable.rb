@@ -60,7 +60,7 @@ module Buildable
 
     def check_dependencies
       gemfile = File.read gemfile_path
-      gemfile.chop! << "\n\n# Gem for build debian (deb) packages\ngem 'fpm'\n\n" unless gemfile.match /gem ['"]fpm['"]/
+      gemfile.chop! << "\n\n# Gem for build debian (deb) packages\ngem 'fpm', group: 'development'\n\n" unless gemfile.match /gem ['"]fpm['"]/
       File.open(gemfile_path, 'w') { |f| f.write gemfile }
     end
 

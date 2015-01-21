@@ -8,6 +8,8 @@ PIDFILE=$PROJECT_PATH/<%= name %>.pid
 # Config where how to start your app!
 STARTING_PROJECT=""
 
+
+
 if [[ -z $STARTING_PROJECT ]]; then
   printf "ERROR: Project starting configuration not found!\nPlease fix /etc/init.d/$PROJECT_NAME\n"
   exit 1

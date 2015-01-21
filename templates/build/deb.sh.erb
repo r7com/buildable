@@ -1,5 +1,11 @@
 #!/bin/bash
+
+# nome do projeto
 PROJECT_NAME="<%= name %>"
+# lista de arquivos e diretorios para incluir no pacote
+FILES_TO_COPY="<%= Dir['*'].join(' ') %>"
+# informacoes do pacote
+VERSION=`git describe --abbrev=0 --match="[0-9]*\.[0-9]*\.[0-9]*"`
 
 pushd .
 cd build
@@ -28,7 +34,7 @@ fi
 
 # vendoriza as gems do projeto
 rm -rf vendor/cache vendor/ruby .bundle
-bundle install --deployment --without development test
+bundle install --deployment --binstubs --without development test
 
 # falha o script caso o bundle install tenha falhado
 FAIL=$?
@@ -37,16 +43,12 @@ if [ $FAIL -gt "0" ]; then
   exit $FAIL
 fi
 
-# lista de arquivos e diretorios para incluir no pacote
-FILES_TO_COPY="<%= Dir['*'].join(' ') %>"
 cp -R $FILES_TO_COPY ./build/debian/r7/<%= name %>
 cp -R ./etc ./build/debian/
 
 # apaga tags do jenkins antes de pegar a versao
 git tag -l | grep jenkins | xargs git tag -d
 
-# informacoes do pacote
-VERSION=`git describe --abbrev=0 --match="[0-9]*\.[0-9]*\.[0-9]*"`
 PACKAGE_NAME=$PROJECT_NAME
 ARCH="all"
 MAINTAINER="R7"
