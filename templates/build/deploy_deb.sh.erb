@@ -1,9 +1,0 @@
-#!/bin/bash -x
-
-echo "Fazendo deploy para host $DEPLOY_HOST"
-ssh r7deployer@$DEPLOY_HOST 'rm -rf ~/deploy/<%= package_name %>*.deb'
-scp ./build/debian/<%= name %>*.deb r7deployer@$DEPLOY_HOST:/home/r7deployer/deploy
-ssh r7deployer@$DEPLOY_HOST 'sudo service <%= name %> stop'
-ssh r7deployer@$DEPLOY_HOST 'sudo dpkg -r <%= name %>; sudo rm -rf /r7/<%= name %>/vendor'
-ssh r7deployer@$DEPLOY_HOST 'sudo dpkg -i ~/deploy/<%= package_name %>*.deb'
-ssh r7deployer@$DEPLOY_HOST 'sudo service <%= name %> start'
