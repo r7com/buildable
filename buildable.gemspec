@@ -18,6 +18,8 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "fpm"
   spec.add_runtime_dependency "bundle"
+  spec.add_runtime_dependency "foreman"
+  spec.add_runtime_dependency "foreman-export-initd"
 
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "guard"
