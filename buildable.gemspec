@@ -16,10 +16,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "fpm"
-  spec.add_runtime_dependency "bundle"
-  spec.add_runtime_dependency "foreman"
-  spec.add_runtime_dependency "foreman-export-initd"
+  spec.add_runtime_dependency "fpm", "~> 1.3.3"
+  spec.add_runtime_dependency "foreman", "~> 0.77.0"
+  spec.add_runtime_dependency "foreman-export-initd", "~> 0.1.1"
 
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "guard"
