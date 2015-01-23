@@ -1,9 +1,10 @@
-namespace :buildable
+namespace :buildable do
 
   desc "Create package buildable structure"
   task :init do
-    # create directories
-    # run templates
+    puts "Creating buildable structure".colorize(:green)
+    FileMaker.create 'Procfile'
+    FileMaker.create 'buildable.yml', {name: 'app name', description: 'App nice description'}.to_yaml
   end
 
   desc "Build debian (deb) package"
