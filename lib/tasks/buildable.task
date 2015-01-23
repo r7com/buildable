@@ -1,26 +1,32 @@
+STDOUT.sync = true
+
 namespace :buildable do
 
   desc "Create package buildable structure"
   task :init do
-    puts "Creating buildable structure".colorize(:green)
-    FileMaker.create 'Procfile'
-    FileMaker.create 'buildable.yml', {name: 'app name', description: 'App nice description'}.to_yaml
+    puts "Creating buildable structure"
+    Buildable::FileMaker.create 'Procfile', "web: rackup -p $PORT"
+    Buildable::FileMaker.create 'buildable.yml', {'name' => 'app name', 'description' => 'App nice description'}.to_yaml
   end
 
   desc "Build debian (deb) package"
   task :build do
-    raise "Error 'build' directory not found, please run:\n rake buildable:generate"
+    puts "Preparing files to package"
+    Buildable::FileMaker.clean_path 'buildable'
+    FileUtils.mkdir_p 'buildable/debian/r7/app_name'
+    FileUtils.mkdir_p 'buildable/debian/etc/init.d'
 
-    # limpar diretorio de build
+    files = Dir['*'] - ['buildable', 'buildable.yml']
+    files.each do |file|
+      puts "  Adding #{file}".colorize(:green)
+      FileUtils.cp_r file, 'buildable/debian/r7/app_name'
+    end
 
-    # copiar arquivos listados
+    Dir.chdir 'buildable/debian/r7/app_name'
 
-    # copiar os scripts de pre e post install
+    %x{bundle install --deployment --binstubs --without="development test"}
 
-    # pegar versao do build (git)
-
-    # gerar o pacote FPM
-
+    %x{bundle exec foreman export initd ../etc/init.d -a app_name}
   end
 
 end

@@ -1,4 +1,7 @@
+require 'yaml'
+require 'colorize'
+
 module Buildable
 end
 
-require './lib/buildable/file_maker'
+require_relative 'buildable/file_maker'

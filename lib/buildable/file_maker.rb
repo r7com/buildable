@@ -3,11 +3,15 @@ module Buildable::FileMaker
 
   def create(filename, content = '')
     if File.exists? filename
-      puts "#{filename} exist skipping".colorize(:light_red)
+      puts "  skipping #{filename} file exists".colorize(:light_red)
     else
-      puts "Creating #{filename}".colorize(:green)
+      puts "  creating #{filename}".colorize(:green)
       File.open(filename, 'w') { |file| file.write content }
     end
   end
 
+  def clean_path(path)
+    FileUtils.rm_rf path if Dir.exists? path
+    Dir.mkdir path
+  end
 end
