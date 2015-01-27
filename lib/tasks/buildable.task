@@ -18,7 +18,7 @@ namespace :buildable do
     buildable_dir   = File.expand_path('buildable')
     package_dir     = File.expand_path('buildable/package')
     initd_dir       = File.expand_path('buildable/package/etc/init.d')
-    r7_dir          = File.expand_path('buildable/package/r7')
+    app_dir         = File.expand_path("buildable/package/r7/#{app_name}")
 
     data = YAML.load_file '.buildable' if File.exists? '.buildable'
 
@@ -32,7 +32,7 @@ namespace :buildable do
 
     puts " * Preparing files to package"
     Buildable::FileMaker.clean_path buildable_dir
-    FileUtils.mkdir_p r7_dir
+    FileUtils.mkdir_p app_dir
     FileUtils.mkdir_p initd_dir
     FileUtils.mkdir_p destination_dir
 
@@ -47,7 +47,7 @@ namespace :buildable do
 
     files.each do |file|
       puts "  Adding #{file}".colorize(:green)
-      FileUtils.cp_r file, r7_dir
+      FileUtils.cp_r file, app_dir
     end
 
     Dir.chdir 'buildable/package'
