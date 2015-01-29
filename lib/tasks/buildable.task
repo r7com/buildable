@@ -11,7 +11,11 @@ namespace :buildable do
 
   desc "Build debian (deb) package"
   task :build do
-    # bundle install --deployment --binstubs --without="development test"
+    filename = File.expand_path('.buildable')
+    data = YAML.load_file filename if File.exists? filename
+
+    app_name    = data['name']
+    description = data['description']
 
     source_dir      = File.expand_path('.')
     destination_dir = File.expand_path('packages')
@@ -19,11 +23,6 @@ namespace :buildable do
     package_dir     = File.expand_path('buildable/package')
     initd_dir       = File.expand_path('buildable/package/etc/init.d')
     app_dir         = File.expand_path("buildable/package/r7/#{app_name}")
-
-    data = YAML.load_file '.buildable' if File.exists? '.buildable'
-
-    app_name    = data['name']
-    description = data['description']
 
     # ABORTAR CASO NAO CONSIGA PEGAR VERSAO
     version = %x{git describe --abbrev=0 --match="[0-9]*\.[0-9]*\.[0-9]*"}.chomp
