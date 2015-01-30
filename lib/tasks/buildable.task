@@ -17,12 +17,13 @@ namespace :buildable do
     app_name    = data['name']
     description = data['description']
 
-    source_dir      = File.expand_path('.')
-    destination_dir = File.expand_path('packages')
-    buildable_dir   = File.expand_path('buildable')
-    package_dir     = File.expand_path('buildable/package')
-    initd_dir       = File.expand_path('buildable/package/etc/init.d')
-    app_dir         = File.expand_path("buildable/package/r7/#{app_name}")
+    source_dir      = File.expand_path '.'
+    destination_dir = File.expand_path 'packages'
+    buildable_dir   = File.expand_path 'buildable'
+    package_dir     = File.join buildable_dir, 'package'
+    initd_dir       = File.join package_dir, 'etc', 'init.d'
+    app_dir         = File.join package_dir, 'r7', app_name
+    post_install    = File.join buildable_dir, 'post_install'
 
     # ABORTAR CASO NAO CONSIGA PEGAR VERSAO
     version = %x{git describe --abbrev=0 --match="[0-9]*\.[0-9]*\.[0-9]*"}.chomp
@@ -35,13 +36,14 @@ namespace :buildable do
     FileUtils.mkdir_p initd_dir
     FileUtils.mkdir_p destination_dir
 
-    puts " * Generate init scripts"
-    %x{bundle exec foreman export initd #{initd_dir} -a #{app_name}}
+    # puts " * Generate init scripts"
+    # %x{bundle exec foreman export initd #{initd_dir} -a #{app_name}}
 
     puts " * Copy files to package"
     files = Dir['*']
     files = files - ['buildable', 'buildable.yml'] # remove buildable
     files << '.bundle' if File.exists? '.bundle'
+    files << '.ruby-version' if File.exists? '.ruby-version'
     files.reject { |item| item =~ /config\/.*\.yml/ }
 
     files.each do |file|
@@ -49,12 +51,19 @@ namespace :buildable do
       FileUtils.cp_r file, app_dir
     end
 
-    Dir.chdir 'buildable/package'
+   Buildable::FileMaker.create(post_install, %Q{
+#!/bin/bash
+cd /r7/#{app_name}
+bundle exec foreman export initd /etc/init.d -a #{app_name}
+})
+   File.chmod(0770, post_install)
+
+    Buildable::FileMaker.clean_path package_dir
     puts "Generate package"
-    %x{bundle exec fpm -s dir -t deb -n #{app_name} -v #{version} -a all -m R7 -p #{destination_dir} --prefix / --description #{description.inspect} ./r7 ./etc}
+    %x{bundle exec fpm -s dir -t deb -n #{app_name} -v #{version} -a all -m R7 -p #{destination_dir} --prefix / --description #{description.inspect} --post-install #{post_install} ./r7 ./etc}
 
     puts "Cleaning tempfiles"
-    FileUtils.rm_rf buildable_dir
+    # FileUtils.rm_rf buildable_dir
 
     puts "Done\n"
   end
