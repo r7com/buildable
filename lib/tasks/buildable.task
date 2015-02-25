@@ -60,7 +60,7 @@ bundle exec foreman export initd /etc/init.d -a #{app_name}
 
     Buildable::FileMaker.clean_path package_dir
     puts "Generate package"
-    %x{bundle exec fpm -s dir -t deb -n #{app_name} -v #{version} -a all -m R7 -p #{destination_dir} --prefix / --description #{description.inspect} --post-install #{post_install} ./r7 ./etc}
+    p %x{bundle exec fpm -s dir -t deb -n #{app_name} -v #{version} -a all -m R7 -p #{destination_dir} --prefix / --description #{description.inspect} --post-install #{post_install} ./r7 ./etc}
 
     puts "Cleaning tempfiles"
     # FileUtils.rm_rf buildable_dir

@@ -14,4 +14,8 @@ module Buildable::FileMaker
     FileUtils.rm_rf path if Dir.exists? path
     Dir.mkdir path
   end
+
+  def make_executable(filename)
+    File.chmod(0770, filename)
+  end
 end
