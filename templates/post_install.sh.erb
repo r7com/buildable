@@ -1,3 +1,6 @@
 #!/bin/bash
-cd /r7/<%= app_name %>
-bundle exec foreman export initd /etc/init.d -a <%= app_name %>
+
+pushd .
+cd /r7/<%= Buildable.config.project_name %>
+bundle exec foreman export initd /etc/init.d -a <%= Buildable.config.project_name %>
+popd
