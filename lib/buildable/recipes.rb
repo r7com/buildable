@@ -1,4 +1,5 @@
 require 'erb'
+require 'yaml'
 require 'fileutils'
 
 module Buildable::Recipes
@@ -15,8 +16,11 @@ module Buildable::Recipes
   end
 
   recipe :init do
-    Buildable::FileTools.create 'Procfile', "production: bundle exec unicorn -c config/unicorn.rb\ndevelopment: bundle exec rackup -p 3000\n"
-    Buildable::FileTools.create '.buildable.yml', {'project_name' => 'app name', 'description' => 'Most awesome project in the world', 'exclude_dirs' => %w{. .. config spec features test .git .gitignore .buildable.yml .build pkg}}.to_yaml
+    puts "Creating Procfile"
+    File.open('Procfile', 'w')       { |f| f.write "production: bundle exec unicorn -c config/unicorn.rb\ndevelopment: bundle exec rackup -p 3000\n" }
+    puts "Creating .buildable.yml"
+    File.open('.buildable.yml', 'w') { |f| f.write({'project_name' => 'app name', 'description' => 'Most awesome project in the world', 'exclude_dirs' => %w{. .. config spec features test .git .gitignore .buildable.yml .build pkg log}}.to_yaml) }
+    puts "Please edit .buildable.yml to setup application"
   end
 
   recipe :create_path do
@@ -36,7 +40,8 @@ module Buildable::Recipes
 
   recipe :create_scripts do
     puts "Creating post_install script"
-    content = ERB.new(File.read './templates/post_install.sh.erb')
+    template_file = File.expand_path('../../../templates/post_install.sh.erb', __FILE__)
+    content = ERB.new(File.read template_file)
     File.open(Buildable.post_install_filename, 'w') { |file| file.write content.result }
     FileUtils.chmod 0755, Buildable.post_install_filename
   end

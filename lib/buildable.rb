@@ -1,7 +1,7 @@
 # Bundler.require(:default)
 require 'configureasy'
 
-require './lib/buildable/recipes'
+require_relative 'buildable/recipes'
 
 module Buildable
   include Configureasy
