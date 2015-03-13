@@ -1,23 +1,46 @@
 =Buildable
 
-configs be in ./.buildable.yml
-# project_name: FooBar
-# exclude_dirs:
-#  - spec
-#  - config
+Precisa buildar o seu projeto e não sabe como?
 
+Basta seguir o seguintes passos:
 
-builds be in ./pkg
+==Instalação
 
-build data be in ./.build
-# ./.build/root/r7/project_name
-# ./.build/scripts/<scripts>
+ Inclua a gem no Gemfile do seu projeto:
 
+      group :development do
+        gem 'buildable'
+      end
 
-== TODO
- - Load .buildable.yml content
- - Make/Clean .build directories
- - Copy app data to destination
- - Create post_install script
- - Run fpm
- - Be Happy!
+ Instale a gem via bundle:
+
+    $ bundle install
+
+==Configuração
+
+ Crie os arquivos de configuração
+
+     $ bundle exec buildable init
+
+ Edite o arquivo .buildable.yml para configurar a build para o seu projeto.
+
+ Edite o arquivo Procfile para especificar como o seu projeto deve subir, lembrando
+ que você pode criar configurações diferente para desenvolvimento e produção.
+
+==Gerando Pacote
+
+ Execute o seguinte comando
+
+     $ bundle exec buildable build
+
+ O .deb será criado no diretório _pkg_.
+
+=Subindo o Projeto em QA/HOMOL/PROD
+
+ Utilize o script de inicialização criados na instalação
+
+    # service app_name-production start
+
+=Duvidas questÃµes e aprimoramentos:
+
+mail-me: ajfprates@gmail.com
