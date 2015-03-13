@@ -1,5 +1,3 @@
-require 'erb'
-require 'yaml'
 require 'fileutils'
 
 module Buildable::Recipes
@@ -17,9 +15,9 @@ module Buildable::Recipes
 
   recipe :init do
     puts "Creating Procfile"
-    File.open('Procfile', 'w')       { |f| f.write "production: bundle exec unicorn -c config/unicorn.rb\ndevelopment: bundle exec rackup -p 3000\n" }
+    Buildable::FileMaker.template 'Procfile'
     puts "Creating .buildable.yml"
-    File.open('.buildable.yml', 'w') { |f| f.write({'project_name' => 'app name', 'description' => 'Most awesome project in the world', 'exclude_dirs' => %w{. .. config spec features test .git .gitignore .buildable.yml .build pkg log}}.to_yaml) }
+    Buildable::FileMaker.template '.buildable.yml'
     puts "Please edit .buildable.yml to setup application"
   end
 
@@ -40,9 +38,7 @@ module Buildable::Recipes
 
   recipe :create_scripts do
     puts "Creating post_install script"
-    template_file = File.expand_path('../../../templates/post_install.sh.erb', __FILE__)
-    content = ERB.new(File.read template_file)
-    File.open(Buildable.post_install_filename, 'w') { |file| file.write content.result }
+    Buildable::FileMaker.template 'post_install.sh', Buildable::BUILD_DIR
     FileUtils.chmod 0755, Buildable.post_install_filename
   end
 

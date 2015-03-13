@@ -1,5 +1,17 @@
 #!/bin/env ruby
-STDOUT.sync = true
+require 'buildable'
 
-require './lib/buildable'
-Buildable.build
+case ARGV.join(' ')
+when 'init'
+  Buildable.init
+when 'build'
+  Buildable.build
+when 'version'
+  Buildable.VERSION
+else
+  puts %Q{Usage: buildable [option]
+  init\t\tCreate buildable structure
+  build\t\tGenerate debian package in ./pkg
+  version\tDisplay version
+}
+end

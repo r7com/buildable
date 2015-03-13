@@ -1,6 +1,7 @@
 # Bundler.require(:default)
 require 'configureasy'
 
+require_relative 'buildable/file_maker'
 require_relative 'buildable/recipes'
 
 module Buildable
