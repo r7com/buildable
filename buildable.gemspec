@@ -17,7 +17,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib", "lib/tasks", "lib/buildable"]
 
   spec.add_runtime_dependency "fpm", "~> 1.3.3"
-  spec.add_runtime_dependency "foreman", "~> 0.77.0"
+  spec.add_runtime_dependency "foreman", "~> 0.78.0"
   spec.add_runtime_dependency "foreman-export-initd", "~> 0.1.1"
   spec.add_runtime_dependency "configureasy", "~> 1.0.0"
+  spec.add_runtime_dependency "ffi", "1.9.6"
 end
