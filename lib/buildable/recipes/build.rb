@@ -1,29 +1,8 @@
-require 'fileutils'
-
-module Buildable::Recipes
-  class << self
-    @@recipes = {}
-
-    def [](name)
-      @@recipes[name].call if @@recipes.has_key?(name)
-    end
-
-    def recipe(name, &block)
-      @@recipes[name] = block
-    end
-  end
-
-  recipe :init do
-    puts "Creating Procfile"
-    Buildable::FileMaker.template 'Procfile'
-    puts "Creating .buildable.yml"
-    Buildable::FileMaker.template '.buildable.yml'
-    puts "Please edit .buildable.yml to setup application"
-  end
+module Buildable::Recipe
 
   recipe :create_path do
     puts "Preparing structure to build"
-    Buildable::Recipes[:remove_path] if Dir.exist? Buildable::BUILD_DIR
+    Buildable::Recipe[:remove_path] if Dir.exist? Buildable::BUILD_DIR
     FileUtils.mkdir_p(Buildable.build_app_dir)
     FileUtils.mkdir_p('./pkg')
   end
@@ -36,10 +15,19 @@ module Buildable::Recipes
     end
   end
 
+  recipe :vendor_gems do
+    %x{bundle install --deployment --without development --without test}
+  end
+
   recipe :create_scripts do
     puts "Creating post_install script"
     Buildable::FileMaker.template 'post_install.sh', Buildable::BUILD_DIR
     FileUtils.chmod 0755, Buildable.post_install_filename
+  end
+
+  recipe :create_env do
+    puts "Creating enviroment settings"
+    Buildable::FileMaker.template '.env', Buildable.build_app_dir
   end
 
   recipe :make_package do
@@ -53,7 +41,7 @@ module Buildable::Recipes
 
   recipe :remove_path do
     puts "Cleaning"
-    FileUtils.rm_rf Buildable::BUILD_DIR
+    # FileUtils.rm_rf Buildable::BUILD_DIR
   end
 
 end
