@@ -1,6 +1,5 @@
 #!/bin/bash
-
 pushd .
 cd /r7/<%= Buildable.config.project_name %>
-bin/foreman export initd /etc/init.d -a <%= Buildable.config.project_name %>
+bin/foreman export initd /etc/init.d -u r7app -a <%= Buildable.config.project_name %>
 popd
