@@ -41,7 +41,7 @@ module Buildable::Recipe
 
   recipe :remove_path do
     puts "Cleaning"
-    # FileUtils.rm_rf Buildable::BUILD_DIR
+    FileUtils.rm_rf Buildable::BUILD_DIR
   end
 
 end
