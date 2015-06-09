@@ -4,7 +4,7 @@ module Buildable::Recipe
     puts "Preparing structure to build"
     Buildable::Recipe[:remove_path] if Dir.exist? Buildable::BUILD_DIR
     FileUtils.mkdir_p(Buildable.build_app_dir)
-    FileUtils.mkdir_p('.pkg')
+    FileUtils.mkdir_p('./pkg')
   end
 
   recipe :copy_source do
