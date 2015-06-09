@@ -4,7 +4,7 @@ module Buildable::Recipe
     puts "Preparing structure to build"
     Buildable::Recipe[:remove_path] if Dir.exist? Buildable::BUILD_DIR
     FileUtils.mkdir_p(Buildable.build_app_dir)
-    FileUtils.mkdir_p('./build/debian')
+    FileUtils.mkdir_p('.pkg')
   end
 
   recipe :copy_source do
@@ -35,7 +35,7 @@ module Buildable::Recipe
     raise "Can't define build version, please check git describe" unless version
 
     puts "Creating package version #{version}"
-    stdout = %x{bundle exec fpm -s dir -t deb --name #{Buildable.config.project_name} --version #{version} --architecture all --maintainer R7 --force --package ./build/debian --prefix / --description #{Buildable.config.description.inspect} --post-install #{Buildable.post_install_filename} -C "#{Buildable::BUILD_ROOT_DIR}" ./r7 2>&1}
+    stdout = %x{bundle exec fpm -s dir -t deb --name #{Buildable.config.project_name} --version #{version} --architecture all --maintainer R7 --force --package ./pkg --prefix / --description #{Buildable.config.description.inspect} --post-install #{Buildable.post_install_filename} -C "#{Buildable::BUILD_ROOT_DIR}" ./r7 2>&1}
     raise "Can't create package, error:\n#{stdout}" unless $?.success?
   end
 
