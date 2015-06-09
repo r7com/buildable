@@ -10,6 +10,7 @@ coverage
 doc/
 lib/bundler/man
 pkg
+build/debian
 rdoc
 spec/reports
 test/tmp
