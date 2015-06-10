@@ -1,7 +1,9 @@
-# Bundler.require(:default)
-require 'configureasy'
+require 'bundler'
+Bundler.require(:default)
+load File.expand_path('../../lib/tasks/buildable.task', __FILE__) if defined?(Rake)
 
 module Buildable
+  require_relative 'buildable/shell'
   require_relative 'buildable/file_maker'
   require_relative 'buildable/recipe'
 
@@ -21,9 +23,8 @@ module Buildable
   def build
     Recipe[:create_path]
     Recipe[:copy_source]
-    # Recipe[:vendor_gems]
-    Recipe[:create_scripts]
-    Recipe[:create_env]
+    Recipe[:vendor_gems]
+    Recipe[:make_init_script]
     Recipe[:make_package]
     Recipe[:remove_path]
   end
@@ -32,8 +33,8 @@ module Buildable
     File.join(BUILD_ROOT_DIR, 'r7', Buildable.config.project_name)
   end
 
-  def post_install_filename
-    File.join(Buildable::BUILD_DIR, 'post_install.sh')
+  def upstart_folder
+    File.join(BUILD_ROOT_DIR, 'etc/init')
   end
 
 end
