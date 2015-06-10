@@ -1,7 +1,7 @@
 module Buildable::Recipe
 
   recipe :create_path do
-    puts "Preparing structure to build"
+    puts "* Preparing structure to build"
     Buildable::Recipe[:remove_path] if Dir.exist? Buildable::BUILD_DIR
     FileUtils.mkdir_p(Buildable.build_app_dir)
     FileUtils.mkdir_p('./pkg')
@@ -16,31 +16,33 @@ module Buildable::Recipe
   end
 
   recipe :vendor_gems do
-    %x{bundle install --deployment --without development test --binstubs}
+    puts '* Fetching gems'
+    Bundler.with_clean_env do
+      Dir.chdir Buildable.build_app_dir do
+        Buildable::Shell.do 'bundle install --deployment --without development test'
+        raise "Can't fetching gems" unless $?.success?
+      end
+    end
   end
 
-  recipe :create_scripts do
-    puts "Creating post_install script"
-    Buildable::FileMaker.template 'post_install.sh', Buildable::BUILD_DIR
-    FileUtils.chmod 0755, Buildable.post_install_filename
-  end
-
-  recipe :create_env do
-    puts "Creating enviroment settings"
-    Buildable::FileMaker.template '.env', Buildable.build_app_dir
+  recipe :make_init_script do
+    puts "* Generating upstart scripts"
+    Buildable::Shell.do "foreman export upstart #{Buildable.upstart_folder} -u #{Buildable.config.app_user} -a #{Buildable.config.project_name.downcase}"
+    raise "Can't generate upstart scripts" unless $?.success?
   end
 
   recipe :make_package do
-    version = %x{git describe --abbrev=0 --match="[0-9]*\.[0-9]*\.[0-9]*"}.chomp
-    raise "Can't define build version, please check git describe" unless version
-
-    puts "Creating package version #{version}"
-    stdout = %x{bundle exec fpm -s dir -t deb --name #{Buildable.config.project_name} --version #{version} --architecture all --maintainer R7 --force --package ./pkg --prefix / --description #{Buildable.config.description.inspect} --post-install #{Buildable.post_install_filename} -C "#{Buildable::BUILD_ROOT_DIR}" ./r7 2>&1}
-    raise "Can't create package, error:\n#{stdout}" unless $?.success?
+    puts "* Creating package"
+    version = Buildable::Shell.do_quiet %Q{git describe --abbrev=0 --match="[0-9]*\.[0-9]*\.[0-9]*"}
+    raise "Can't define build version, please check git describe" unless $?.success?
+    result = Buildable::Shell.do_quiet "bundle exec fpm -s dir -t deb --name #{Buildable.config.project_name.downcase} --version #{version} --architecture all --maintainer R7 --force --package ./pkg --prefix / --description #{Buildable.config.description.inspect} -C '#{Buildable::BUILD_ROOT_DIR}' ./etc ./r7"
+    raise "Can't create package, error:\n#{result}" unless $?.success?
+    package_name = result.match(/:path=>"\.\/pkg\/([^"]*)/)[1]
+    puts "\tPackage created #{package_name}"
   end
 
   recipe :remove_path do
-    puts "Cleaning"
+    puts "* Clean up build folder"
     FileUtils.rm_rf Buildable::BUILD_DIR
   end
 
