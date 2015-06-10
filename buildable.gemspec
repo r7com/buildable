@@ -16,8 +16,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(spec)/})
   spec.require_paths = ["lib", "lib/tasks", "lib/buildable"]
 
-  spec.add_runtime_dependency "fpm", "~> 1.3.3"
-  spec.add_runtime_dependency "foreman", "~> 0.78.0"
-  spec.add_runtime_dependency "configureasy", "~> 1.0.0"
-  spec.add_runtime_dependency "ffi", "1.9.6"
+  spec.add_runtime_dependency "fpm", ">= 1.3.3"
+  spec.add_runtime_dependency "foreman", ">= 0.78.0"
+  spec.add_runtime_dependency "configureasy", ">= 1.0.0"
 end
