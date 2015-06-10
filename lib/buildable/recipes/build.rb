@@ -16,7 +16,7 @@ module Buildable::Recipe
   end
 
   recipe :vendor_gems do
-    %x{bundle install --deployment --without development --without test}
+    %x{bundle install --deployment --without development test --binstubs}
   end
 
   recipe :create_scripts do
