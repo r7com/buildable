@@ -4,16 +4,12 @@ namespace :buildable do
 
   desc "Create package buildable structure"
   task :init do
-    Recipes[:init]
+    Buildable.init
   end
 
-  desc "Build debian (deb) package"
+  desc "Make debian (deb) package"
   task :build do
-    Recipes[:create_path]
-    Recipes[:copy_source]
-    Recipes[:create_scripts]
-    Recipes[:make_package]
-    Recipes[:remove_path]
+    Buildable.build
   end
 
 end
