@@ -21,6 +21,7 @@ module Buildable
   end
 
   def build
+    check_configs
     Recipe[:create_path]
     Recipe[:copy_source]
     Recipe[:vendor_gems]
@@ -35,6 +36,12 @@ module Buildable
 
   def upstart_folder
     File.join(BUILD_ROOT_DIR, 'etc/init')
+  end
+
+  def check_configs
+    return if File.exist?('.buildable') && File.exist?('.env') && File.exist?('Procfile')
+    puts "Missing config please run buildable init to create it."
+    exit 1
   end
 
 end
