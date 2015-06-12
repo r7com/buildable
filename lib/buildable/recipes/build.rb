@@ -27,8 +27,8 @@ module Buildable::Recipe
 
   recipe :make_init_script do
     puts "* Generating upstart scripts"
-    Buildable::FileMaker.plain_text('.foreman') { |content| content << {root: Buildable.config.root_dir, procfile: './Procfile'}.to_yaml }
-    Buildable::Shell.do "foreman export upstart #{Buildable.upstart_folder} -u #{Buildable.config.app_user} -a #{Buildable.config.project_name.downcase}"
+    Buildable::FileMaker.template '.foreman'
+    Buildable::Shell.do "foreman export upstart #{Buildable.upstart_folder} -u #{Buildable.config.app_user} -e .env -a #{Buildable.config.project_name.downcase}"
     raise "Can't generate upstart scripts" unless Buildable::Shell.success?
   end
 
