@@ -20,7 +20,7 @@ module Buildable::Recipe
     Bundler.with_clean_env do
       Dir.chdir Buildable.build_app_dir do
         Buildable::Shell.do 'bundle install --deployment --without development test'
-        raise "Can't fetching gems" unless $?.success?
+        raise "Can't fetching gems" unless Buildable::Shell.success?
       end
     end
   end
@@ -29,15 +29,15 @@ module Buildable::Recipe
     puts "* Generating upstart scripts"
     Buildable::FileMaker.plain_text('.foreman') { |content| content << {root: Buildable.config.root_dir, procfile: './Procfile'}.to_yaml }
     Buildable::Shell.do "foreman export upstart #{Buildable.upstart_folder} -u #{Buildable.config.app_user} -a #{Buildable.config.project_name.downcase}"
-    raise "Can't generate upstart scripts" unless $?.success?
+    raise "Can't generate upstart scripts" unless Buildable::Shell.success?
   end
 
   recipe :make_package do
     puts "* Creating package"
     version = Buildable::Shell.do_quiet %Q{git describe --abbrev=0 --match="[0-9]*\.[0-9]*\.[0-9]*"}
-    raise "Can't define build version, please check git describe" unless $?.success?
+    raise "Can't define build version, please check git describe" unless Buildable::Shell.success?
     result = Buildable::Shell.do_quiet "bundle exec fpm -s dir -t deb --name #{Buildable.config.project_name.downcase} --version #{version} --architecture all --maintainer R7 --force --package ./pkg --prefix / --description #{Buildable.config.description.inspect} -C '#{Buildable::BUILD_ROOT_DIR}' ./etc ./r7"
-    raise "Can't create package, error:\n#{result}" unless $?.success?
+    raise "Can't create package, error:\n#{result}" unless Buildable::Shell.success?
     package_name = result.match(/:path=>"\.\/pkg\/([^"]*)/)[1]
     puts "\tPackage created #{package_name}"
   end
