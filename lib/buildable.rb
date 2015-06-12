@@ -31,7 +31,7 @@ module Buildable
   end
 
   def build_app_dir
-    File.join(BUILD_ROOT_DIR, 'r7', Buildable.config.project_name)
+    File.join(BUILD_ROOT_DIR, Buildable.config.root_dir)
   end
 
   def upstart_folder
