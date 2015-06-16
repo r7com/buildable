@@ -4,7 +4,7 @@ module Buildable::Shell
   extend self
 
   def success?
-    $? && $?.success?
+    !!($? && $?.success?)
   end
 
   def do(command)
