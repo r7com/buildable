@@ -1,11 +1,11 @@
 require 'bundler'
 Bundler.require(:default)
-load File.expand_path('../../lib/tasks/buildable.task', __FILE__) if defined?(Rake)
 
 module Buildable
   require_relative 'buildable/shell'
   require_relative 'buildable/file_maker'
   require_relative 'buildable/recipe'
+  require_relative 'buildable/rake_helper'
 
   include Configureasy
   load_config '.buildable', as: 'config', path: '.'
@@ -21,6 +21,7 @@ module Buildable
   end
 
   def build
+    STDOUT.sync = true
     check_configs
     Recipe[:create_path]
     Recipe[:copy_source]
