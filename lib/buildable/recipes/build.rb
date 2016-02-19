@@ -8,7 +8,7 @@ module Buildable::Recipe
   end
 
   recipe :copy_source do
-    files = Dir.entries('.') - Buildable.config.exclude_dirs
+    files = Dir.entries('.') - (Buildable.config.files_to_ignore << %w{. ..})
     files.each do |file|
       puts "\tCopying #{file}"
       FileUtils.cp_r file, File.join(Buildable.build_app_dir, file)
@@ -26,17 +26,17 @@ module Buildable::Recipe
   end
 
   recipe :make_init_script do
-    puts "* Generating upstart scripts"
-    Buildable::FileMaker.template '.foreman'
-    Buildable::Shell.do "foreman export upstart #{Buildable.upstart_folder} -u #{Buildable.config.app_user} -e .env -a #{Buildable.config.project_name.downcase}"
-    raise "Can't generate upstart scripts" unless Buildable::Shell.success?
+    puts "* Generating init scripts"
+    # Buildable::Shell.do "foreman export upstart #{Buildable.upstart_folder} -u #{Buildable.config.app_user} -e production.env -a #{Buildable.config.project_name.downcase}"
+    Buildable::Shell.do "foreman export initscript #{Buildable.upstart_folder} --user #{Buildable.config.app_user} --env production.env --app #{Buildable.config.project_name.downcase} --log /tmp -f Procfile -d #{Buildable.config.root_dir}"
+    raise "Can't generate init scripts" unless Buildable::Shell.success?
   end
 
   recipe :make_package do
     puts "* Creating package"
     version = Buildable::Shell.do_quiet %Q{git describe --abbrev=0 --match="[0-9]*\.[0-9]*\.[0-9]*"}
     raise "Can't define build version, please check git describe" unless Buildable::Shell.success?
-    result = Buildable::Shell.do_quiet "bundle exec fpm -s dir -t deb --name #{Buildable.config.project_name.downcase} --version #{version} --architecture all --maintainer R7 --force --package ./pkg --prefix / --description #{Buildable.config.description.inspect} -C '#{Buildable::BUILD_ROOT_DIR}' ./etc ./r7"
+    result = Buildable::Shell.do_quiet "bundle exec fpm -s dir -t deb --name r7-#{Buildable.config.project_name.downcase} --version #{version} --architecture all --maintainer R7 --force --package ./pkg --prefix / --description #{Buildable.config.description.inspect} -C '#{Buildable::BUILD_ROOT_DIR}' ./etc ./r7"
     raise "Can't create package, error:\n#{result}" unless Buildable::Shell.success?
     package_name = result.match(/:path=>"\.\/pkg\/([^"]*)/)[1]
     puts "\tPackage created #{package_name}"
