@@ -45,10 +45,9 @@ module Buildable
     exit 1
   end
 
-  def files_to_ignore
-    self.config.files_to_ignore.tap do |files|
-      files << %w{. .. .build .buildable.yml}
-    end
+  def files_to_pack
+    files_to_ignore = self.config.files_to_ignore + %w{. .. .build .buildable.yml}
+    Dir.entries('.') - files_to_ignore
   end
 
 end
