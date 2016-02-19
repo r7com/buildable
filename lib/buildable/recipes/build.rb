@@ -8,7 +8,7 @@ module Buildable::Recipe
   end
 
   recipe :copy_source do
-    files = Dir.entries('.') - (Buildable.config.files_to_ignore << %w{. ..})
+    files = Dir.entries('.') - Buildable.files_to_ignore
     files.each do |file|
       puts "\tCopying #{file}"
       FileUtils.cp_r file, File.join(Buildable.build_app_dir, file)
