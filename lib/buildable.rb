@@ -40,7 +40,7 @@ module Buildable
   end
 
   def check_configs
-    return if File.exist?('.buildable.yml') && File.exist?('.env') && File.exist?('Procfile')
+    return if File.exist?('.buildable.yml') && File.exist?('production.env') && File.exist?('Procfile')
     puts "Missing config please run buildable init to create it."
     exit 1
   end
