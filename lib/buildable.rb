@@ -46,7 +46,7 @@ module Buildable
   end
 
   def files_to_pack
-    files_to_ignore = self.config.files_to_ignore + %w{. .. .build .buildable.yml}
+    files_to_ignore = self.config.files_to_ignore + %w{. .. .build .buildable.yml vendor}
     Dir.entries('.') - files_to_ignore
   end
 
