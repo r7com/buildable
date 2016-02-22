@@ -21,9 +21,9 @@ NAME=<%= app %>
 PIDDIR=/var/run/$NAME
 SCRIPTNAME=/etc/init.d/$NAME
 USERNAME=<%= user %>
-<% engine.environment.each_pair do |var,env| -%>
+<% engine.environment.each_pair do |var,env| %>
 export <%= var.upcase %>=<%= env %>
-<% end -%>
+<% end %>
 
 
 # Load the VERBOSE setting and other rcS variables
@@ -47,7 +47,7 @@ do_start()
       # START CONCURRENT: <%= num %>
         # Start: <%= app %>.<%= name %>.<%= num %>
         # Create $PIDDIR/<%= name %>.<%= num %>.pid
-        su - $USERNAME -c 'cd <%= engine.root %>; <%= process.command %>& echo $!' > $PIDDIR/<%= name %>.<%= num %>.pid
+        su - $USERNAME -c 'cd <%= engine.root %>; <%= process.command %> & echo $!' > $PIDDIR/<%= name %>.<%= num %>.pid
     <% end %>
   <% end %>
 

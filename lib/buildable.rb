@@ -50,8 +50,8 @@ module Buildable
     Dir.entries('.') - files_to_ignore
   end
 
-  def template_path(file)
-    File.join File.expand_path('../../template', __FILE__), file
+  def foreman_templates
+    File.expand_path('../../templates/foreman', __FILE__)
   end
 
 end
