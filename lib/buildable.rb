@@ -50,4 +50,8 @@ module Buildable
     Dir.entries('.') - files_to_ignore
   end
 
+  def template_path(file)
+    File.join File.expand_path('../../template', __FILE__), file
+  end
+
 end
