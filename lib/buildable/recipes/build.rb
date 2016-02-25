@@ -30,7 +30,7 @@ module Buildable::Recipe
     Buildable::Shell.do "foreman export initscript #{Buildable.initd_folder} --user #{Buildable.config.app_user} --env production.env --app #{Buildable.config.project_name.downcase} --log /tmp --template #{Buildable.foreman_templates} -f Procfile -d #{Buildable.config.root_dir}"
     raise "Can't generate init scripts" unless Buildable::Shell.success?
     initscript = File.join Buildable.initd_folder, Buildable.config.project_name
-    File.chmod 0654, initscript
+    FileUtils.chmod "+x", initscript, verbose: true
   end
 
   recipe :make_package do
