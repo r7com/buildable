@@ -39,6 +39,10 @@ module Buildable
     File.join(BUILD_ROOT_DIR, 'etc/init')
   end
 
+  def initd_folder
+    File.join(BUILD_ROOT_DIR, 'etc/init.d')
+  end
+
   def check_configs
     return if File.exist?('.buildable.yml') && File.exist?('production.env') && File.exist?('Procfile')
     puts "Missing config please run buildable init to create it."
