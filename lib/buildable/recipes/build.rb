@@ -47,9 +47,10 @@ module Buildable::Recipe
               '--prefix' => '/',
               '--description' => Buildable.config.description,
               '--force' => nil,
-              '--pre-install' => Buildable.config.pre_install if File.exist? Buildable.config.pre_install,
-              '--post-install' => Buildable.config.post_install if File.exist? Buildable.config.post_install,
               '-C' => "{Buildable::BUILD_ROOT_DIR} ./etc ./#{Buildable.build_app_dir}"}
+    params.merge('--pre-install' => Buildable.config.pre_install) if File.exist? Buildable.config.pre_install
+    params.merge('--post-install' => Buildable.config.post_install) if File.exist? Buildable.config.post_install
+
     result = Buildable::Shell.do_quiet 'bundle exec fpm', params
     raise "Can't create package, error:\n#{result}" unless Buildable::Shell.success?
     package_name = result.match(/:path=>"\.\/pkg\/([^"]*)/)[1]
