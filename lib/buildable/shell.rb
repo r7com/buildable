@@ -16,8 +16,8 @@ module Buildable::Shell
     true
   end
 
-  def do_quiet(command)
-    %x{#{command} 2>&1}.chomp
+  def do_quiet(command, params = {})
+    %x{#{command} #{params.to_params} 2>&1}.chomp
   end
 
 end
