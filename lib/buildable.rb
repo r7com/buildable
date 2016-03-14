@@ -2,6 +2,7 @@ require 'bundler'
 Bundler.require(:default)
 
 module Buildable
+  require_relative 'core_ext/hash'
   require_relative 'buildable/shell'
   require_relative 'buildable/file_maker'
   require_relative 'buildable/recipe'
