@@ -3,6 +3,7 @@ module Buildable::Recipe
   recipe :create_path do
     puts "* Preparing structure to build"
     Buildable::Recipe[:remove_path] if Dir.exist? Buildable::BUILD_DIR
+    Buildable::Recipe[:clean_pkg] if Dir.exist? Buildable::PACKAGE_DIR
     FileUtils.mkdir_p(Buildable.build_app_dir)
     FileUtils.mkdir_p('./pkg')
   end
@@ -46,6 +47,11 @@ module Buildable::Recipe
   recipe :remove_path do
     puts "* Clean up build folder"
     FileUtils.rm_rf Buildable::BUILD_DIR
+  end
+
+  recipe :clean_pkg do
+    puts "* Clean up pkg folder"
+    FileUtils.rm_rf Buildable::PACKAGE_DIR
   end
 
 end
