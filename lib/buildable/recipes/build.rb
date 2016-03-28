@@ -41,7 +41,7 @@ module Buildable::Recipe
 
     raise "Can't generate init scripts" unless Buildable::Shell.success?
     initscript = File.join Buildable.initd_folder, Buildable.config.project_name
-    FileUtils.chmod "+x", initscript, verbose: true
+    FileUtils.chmod "+x", initscript
   end
 
   recipe :make_package do
@@ -52,14 +52,14 @@ module Buildable::Recipe
     params = {
       '-s' => 'dir',
       '-t' => 'deb',
-      '--name' => 'r7-#{Buildable.config.project_name.downcase}',
+      '--name' => "r7-#{Buildable.config.project_name.downcase}",
       '--version' => version,
       '--architecture' => 'all',
       '--package' => './pkg',
       '--prefix' => '/',
-      '--description' => Buildable.config.description,
+      '--description' => Buildable.config.description.inspect,
       '--force' => nil,
-      '-C' => "{Buildable::BUILD_ROOT_DIR} ./etc ./#{Buildable.build_app_dir}"
+      '-C' => "#{Buildable::BUILD_ROOT_DIR} ./etc #{Buildable.config.root_dir}"
     }
 
     result = Buildable::Shell.do_quiet 'bundle exec fpm', params

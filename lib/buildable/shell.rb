@@ -7,8 +7,8 @@ module Buildable::Shell
     !!($? && $?.success?)
   end
 
-  def do(command)
-    PTY.spawn("#{command} 2>&1") do |r,w,pid|
+  def do(command, params = {})
+    PTY.spawn(command_line(command, params)) do |r,w,pid|
       r.each { |line| puts "\t#{line}" } rescue nil # prevents error when process ending
       Process.wait(pid)
     end
@@ -17,7 +17,13 @@ module Buildable::Shell
   end
 
   def do_quiet(command, params = {})
-    %x{#{command} #{params.to_params} 2>&1}.chomp
+    %x{#{command_line(command, params)}}.chomp
+  end
+
+  private
+
+  def command_line(command, params)
+    "#{command} #{params.to_params} 2>&1"
   end
 
 end
