@@ -1,5 +1,4 @@
-require 'bundler'
-Bundler.require(:default)
+require 'configureasy'
 
 module Buildable
   require_relative 'core_ext/hash'
@@ -9,7 +8,7 @@ module Buildable
   require_relative 'buildable/recipe'
   require_relative 'buildable/rake_helper'
 
-  include Configureasy
+  include ::Configureasy
   load_config '.buildable', as: 'config', path: '.'
 
   BUILD_DIR      = './.build'
