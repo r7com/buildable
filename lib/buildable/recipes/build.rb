@@ -26,6 +26,7 @@ module Buildable::Recipe
   end
 
   recipe :make_init_script do
+    # To make the initd script i'm using foreman's bluepill export with custom template
     puts "* Generating init scripts"
     params = {
       '--user' => Buildable.config.app_user,
@@ -36,10 +37,11 @@ module Buildable::Recipe
       '-f' => 'Procfile',
       '-d' => Buildable.config.root_dir
     }
-    Buildable::Shell.do "foreman export initscript #{Buildable.initd_folder}", params
-
+    Buildable::Shell.do "foreman export bluepill #{Buildable.initd_folder}", params
     raise "Can't generate init scripts" unless Buildable::Shell.success?
+
     initscript = File.join Buildable.initd_folder, Buildable.config.project_name
+    FileUtils.move "#{initscript}.pill", initscript
     FileUtils.chmod "+x", initscript
   end
 

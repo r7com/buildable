@@ -21,6 +21,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "rake", '~> 0'
   spec.add_runtime_dependency 'fpm', '~> 1.3', '>= 1.3.3'
   spec.add_runtime_dependency 'foreman', '~> 0.78', '>= 0.78.0'
-  spec.add_runtime_dependency 'foreman-export-initscript', '~> 0'
   spec.add_runtime_dependency 'configureasy', '~> 1.0', '>= 1.0.0'
 end
