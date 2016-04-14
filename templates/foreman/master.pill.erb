@@ -28,7 +28,7 @@ do_start()
 <% engine.each_process do |name, process| -%>
   log_daemon_msg "start <%= name %>"
   <%= name %>_running
-  if [ $? -eq 0 ]; then
+  if [ $? -ne 0 ]; then
     start_<%= name %>
   else
     log_end_msg 1
@@ -69,7 +69,7 @@ show_status()
 <% engine.each_process do |name, process| -%>
 start_<%= name %>()
 {
-  su - $USERNAME <<EOS | cut -d ' ' -f 3 > $<%= name %>_pidfile
+  su - $USERNAME <<EOS | cut -d ' ' -f 2 > $<%= name %>_pidfile
   cd <%= engine.root %>
   <%= engine.environment.collect { |k,v| "#{k}=#{v} " }.join %><%= process.command %> > /dev/null 2>&1 &
   jobs -l
