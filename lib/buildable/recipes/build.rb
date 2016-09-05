@@ -63,7 +63,7 @@ module Buildable::Recipe
       '-C' => "#{Buildable::BUILD_ROOT_DIR} ."
     }
 
-    result = Buildable::Shell.do_quiet 'bundle exec fpm', params
+    result = Buildable::Shell.do_quiet 'fpm', params
     raise "Can't create package, error:\n#{result}" unless Buildable::Shell.success?
     package_name = result.match(/:path=>"\.\/pkg\/([^"]*)/)[1]
     puts "\tPackage created #{package_name}"

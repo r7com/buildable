@@ -1,3 +1,3 @@
 module Buildable
-  VERSION = "1.4.0"
+  VERSION = "1.4.2"
 end
