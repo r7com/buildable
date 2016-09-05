@@ -12,7 +12,9 @@ Sim criar gem é muito mais simples, se você estiver fazendo algo para rubistas
 Primeiramente adicione o *Buildable* no seu Gemfile
 
 ```
-  gem 'buildable'
+  group :build do
+    gem 'buildable'
+  end
 ```
 
 Execute o bunlder para instalar a gem
@@ -23,14 +25,15 @@ Execute o bunlder para instalar a gem
 
 Agora basta criar os arquivos de configuração do seu projeto (este passo é feito apenas uma vez)
 
-```bash
+```shell
   $ buildable init
 ```
 
 Este comando criará os seguintes arquivos:
 
-#TO BE CONTINUED
-
+* .buildable.yml: arquivo de configuração do projeto
+* production.env: arquivo de configuração do ambiente (ver: [foreman](https://github.com/ddollar/foreman))
+* Procfile: arquivo de configuração do executável (ver: [foreman](https://github.com/ddollar/foreman))
 
 O Buildable pode ser utilizado de duas formas seu executável ou via rake (ideal para automatização do build), 
 
