@@ -2,11 +2,11 @@ require 'configureasy'
 
 module Buildable
   require_relative 'core_ext/hash'
-  require_relative 'buildable/version'
+  require_relative 'core_ext/string'
   require_relative 'buildable/shell'
   require_relative 'buildable/file_maker'
   require_relative 'buildable/recipe'
-  require_relative 'buildable/rake_helper'
+  require_relative 'buildable/version'
 
   include ::Configureasy
   load_config '.buildable', as: 'config', path: '.'
@@ -57,6 +57,11 @@ module Buildable
 
   def foreman_templates
     File.expand_path('../../templates/foreman', __FILE__)
+  end
+
+  # Make package name using Organization name (when available) with project name
+  def package_name
+    [config.organization, config.project_name].compact.collect(&:underscore).join('-')
   end
 
 end
