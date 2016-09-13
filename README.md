@@ -51,7 +51,6 @@ Para utilizar o _Buildable_ com o rake é necessário inluir o require no Rakefi
 
 ```ruby
 # on Rakefile
-
 begin
   require 'buildable/rake_task'
   Buildable::RakeTask.load
