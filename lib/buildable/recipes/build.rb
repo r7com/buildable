@@ -53,7 +53,7 @@ module Buildable::Recipe
     params = {
       '-s' => 'dir',
       '-t' => 'deb',
-      '--name' => "r7-#{Buildable.config.project_name.downcase}",
+      '--name' => Buildable.package_name,
       '--version' => version,
       '--architecture' => 'all',
       '--package' => './pkg',
