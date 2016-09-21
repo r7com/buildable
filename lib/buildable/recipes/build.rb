@@ -29,13 +29,13 @@ module Buildable::Recipe
     # To make the initd script i'm using foreman's bluepill export with custom template
     puts "* Generating init scripts"
     params = {
-      '--user' => Buildable.config.app_user,
-      '--env' => 'production.env',
-      '--app' => Buildable.config.project_name.downcase,
-      '--log' => '/tmp',
-      '--template' => Buildable.foreman_templates,
-      '-f' => 'Procfile',
-      '-d' => Buildable.config.root_dir
+      '--user': Buildable.config.app_user,
+      '--env': 'production.env',
+      '--app': Buildable.config.project_name.downcase,
+      '--log': '/tmp',
+      '--template': Buildable.foreman_templates,
+      '-f': 'Procfile',
+      '-d': Buildable.config.root_dir
     }
     Buildable::Shell.do "foreman export bluepill #{Buildable.initd_folder}", params
     raise "Can't generate init scripts" unless Buildable::Shell.success?
@@ -51,16 +51,16 @@ module Buildable::Recipe
     raise "Can't define build version, please check git describe" unless Buildable::Shell.success?
 
     params = {
-      '-s' => 'dir',
-      '-t' => 'deb',
-      '--name' => Buildable.package_name,
-      '--version' => version,
-      '--architecture' => 'all',
-      '--package' => './pkg',
-      '--prefix' => '/',
-      '--description' => Buildable.config.description.inspect,
-      '--force' => nil,
-      '-C' => "#{Buildable::BUILD_ROOT_DIR} ."
+      '-s': 'dir',
+      '-t': 'deb',
+      '--name': Buildable.package_name,
+      '--version': version,
+      '--architecture': 'all',
+      '--package': './pkg',
+      '--prefix': '/',
+      '--description': Buildable.config.description.inspect,
+      '--force': nil,
+      '-C': "#{Buildable::BUILD_ROOT_DIR} ."
     }
 
     result = Buildable::Shell.do_quiet 'fpm', params
