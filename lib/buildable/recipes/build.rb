@@ -63,6 +63,9 @@ module Buildable::Recipe
       '-C': "#{Buildable::BUILD_ROOT_DIR} ."
     }
 
+    params['--deb-user'] = Buildable.config.app_user if Buildable.config.app_user
+    params['--deb-group'] = Buildable.config.app_group if Buildable.config.app_group
+
     result = Buildable::Shell.do_quiet 'fpm', params
     raise "Can't create package, error:\n#{result}" unless Buildable::Shell.success?
     package_name = result.match(/:path=>"\.\/pkg\/([^"]*)/)[1]
