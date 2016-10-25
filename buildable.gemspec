@@ -5,7 +5,7 @@ require 'buildable/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "buildable"
-  spec.version       = Buildable::VERSION
+  spec.version       = `git describe --abbrev=0`
   spec.authors       = ["Alexandre Prates"]
   spec.email         = ["ajfprates@gmail.com"]
   spec.summary       = %q{Gem para criação de pacotes deb}
