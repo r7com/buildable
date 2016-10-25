@@ -17,7 +17,7 @@ Primeiramente adicione o *Buildable* no seu Gemfile
   end
 ```
 
-Execute o bunlder para instalar a gem
+Execute o bundler para instalar a gem
 
 ```shell
   $ bundle install
