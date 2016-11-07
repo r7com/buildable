@@ -65,7 +65,7 @@ module Buildable::Recipe
     params['--deb-user'] = Buildable.config.app_user if Buildable.config.app_user
     params['--deb-group'] = Buildable.config.app_group if Buildable.config.app_group
 
-    Buildable.dependencies.each do |depends|
+    Buildable.dependencies.each do |package|
       key = '--depends'.clone # force generate new object
       params[key] = package
     end
