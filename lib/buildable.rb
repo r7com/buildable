@@ -6,7 +6,6 @@ module Buildable
   require_relative 'buildable/shell'
   require_relative 'buildable/file_maker'
   require_relative 'buildable/recipe'
-  require_relative 'buildable/version'
 
   include ::Configureasy
   load_config '.buildable', as: 'config', path: '.'

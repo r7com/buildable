@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'buildable/version'
+VERSION = `git describe --abbrev=0`
 
 Gem::Specification.new do |spec|
   spec.name          = "buildable"
-  spec.version       = Buildable::VERSION
+  spec.version       = VERSION
   spec.authors       = ["Alexandre Prates"]
   spec.email         = ["ajfprates@gmail.com"]
   spec.summary       = %q{Gem para criação de pacotes deb}
