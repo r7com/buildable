@@ -64,4 +64,8 @@ module Buildable
     [config.organization, config.project_name].compact.collect(&:underscore).join('-')
   end
 
+  def dependencies
+    Buildable.config.depends || []
+  end
+
 end
