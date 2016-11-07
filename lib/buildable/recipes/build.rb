@@ -68,7 +68,8 @@ module Buildable::Recipe
     if Buildable.config.respond_to? :depends
       params.compare_by_identity
       Buildable.config.depends.each do |package|
-        params['--depends'] = package
+        key = '--depends'.clone # force generate new object
+        params[key] = package
       end
     end
 
