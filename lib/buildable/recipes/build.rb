@@ -68,7 +68,7 @@ module Buildable::Recipe
     if Buildable.config.respond_to? :depends
       params.compare_by_identity
       Buildable.config.depends.each do |package|
-        params['--depends'] = package
+        params['--depends'.to_s] = package
       end
     end
 
