@@ -66,7 +66,8 @@ module Buildable::Recipe
     params['--deb-group'] = Buildable.config.app_group if Buildable.config.app_group
 
     Buildable.dependencies.each do |package|
-      params['--depends'] = package
+      key = '--depends'.clone # force generate new object
+      params[key] = package
     end
 
     params['-C'] = "#{Buildable::BUILD_ROOT_DIR} ." # must be last parameter

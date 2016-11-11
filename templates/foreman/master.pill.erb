@@ -15,7 +15,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 NAME=<%= app %>
 USERNAME=<%= user %>
 <% engine.each_process do |name, process| -%>
-<%= name %>_pidfile=/var/run/<%= app %>_<%= name %>.pid
+<%= name %>_pidfile=/var/run/<%= app %>/<%= name %>.pid
 <% end -%>
 
 [ -r /lib/lsb/init-functions ] &&. /lib/lsb/init-functions

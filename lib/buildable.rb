@@ -60,12 +60,12 @@ module Buildable
 
   # Make package name using Organization name (when available) with project name
   def package_name
-    [config.organization, config.project_name].compact.collect(&:underscore).join('-')
+    [self.config.organization, self.config.project_name].compact.collect(&:underscore).join('-')
   end
 
   # Return array with all dependencies specified in .buildable.yml
   def dependencies
-    config.depends || []
+    self.config.depends || []
   end
 
 end
