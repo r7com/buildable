@@ -69,10 +69,10 @@ show_status()
 <% engine.each_process do |name, process| -%>
 start_<%= name %>()
 {
-  su - $USERNAME <<EOS | cut -d ' ' -f 2 > $<%= name %>_pidfile
+  su - $USERNAME <<EOS > $<%= name %>_pidfile
   cd <%= engine.root %>
   <%= engine.environment.collect { |k,v| "#{k}=#{v} " }.join %><%= process.command %> > /dev/null 2>&1 &
-  jobs -l
+  echo \$!
 EOS
   log_end_msg $?
 }
