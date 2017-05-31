@@ -14,10 +14,11 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 NAME=<%= app %>
 USERNAME=<%= user %>
-mkdir -p /var/run/<%= app %>
 <% engine.each_process do |name, process| -%>
 <%= name %>_pidfile=/var/run/<%= app %>/<%= name %>.pid
 <% end -%>
+
+mkdir -p /var/run/<%= app %>
 
 [ -r /lib/lsb/init-functions ] &&. /lib/lsb/init-functions
 
