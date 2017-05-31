@@ -26,8 +26,6 @@ module Buildable::Recipe
   end
 
   recipe :make_init_script do
-    next if File.zero?('Procfile')
-  
     # To make the initd script i'm using foreman's bluepill export with custom template
     puts "* Generating init scripts"
     params = {
