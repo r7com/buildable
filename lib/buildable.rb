@@ -26,7 +26,7 @@ module Buildable
     Recipe[:create_path]
     Recipe[:copy_source]
     Recipe[:vendor_gems]
-    Recipe[:make_init_script]
+    Recipe[:make_init_script] unless ARGV.include?('--no-init')
     Recipe[:make_package]
     Recipe[:remove_path]
   end

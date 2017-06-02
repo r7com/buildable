@@ -45,6 +45,12 @@ Para gerar o pacote basta executar o seguinte comando:
   $ buildable build
 ```
 
+Quando o projeto não for um serviço, é possível desabilitar a criação do script de inicialização executando:
+
+```shell
+  $ buildable build --no-init
+```
+
 ### Via rake
 
 Para utilizar o _Buildable_ com o rake é necessário inluir o require no Rakefile
@@ -65,6 +71,12 @@ Para gerar o pacote basta executar
 
 ```shell
   $ bundle exec rake buildable:build
+```
+
+e para gerar o pacote sem script de inicialização
+
+```shell
+  $ bundle exec rake buildable:build -- --no-init
 ```
 
 _Para uma lista completa das tasks execute rake -D_
