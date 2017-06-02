@@ -18,6 +18,8 @@ USERNAME=<%= user %>
 <%= name %>_pidfile=/var/run/<%= app %>/<%= name %>.pid
 <% end -%>
 
+mkdir -p /var/run/<%= app %>
+
 [ -r /lib/lsb/init-functions ] &&. /lib/lsb/init-functions
 
 #
