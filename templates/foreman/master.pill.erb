@@ -21,7 +21,7 @@ PID_DIR=/var/run/<%= app %>
 
 mkdir -p $PID_DIR
 chown $USERNAME:root $PID_DIR
-chmod 660 $PID_DIR 
+chmod 770 $PID_DIR 
 
 [ -r /lib/lsb/init-functions ] &&. /lib/lsb/init-functions
 
